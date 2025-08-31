@@ -25,4 +25,27 @@ router.post("/", (req, res) => {
   res.status(201).json(newProduct);
 });
 
+// Atualizar produto
+router.put("/:id", (req, res) => {
+  const product = products.find(p => p.id === parseInt(req.params.id, 10));
+  if (!product) return res.status(404).json({ error: "Produto não encontrado" });
+
+  const { name, quantity, price } = req.body;
+  product.name = name ?? product.name;
+  product.quantity = quantity ?? product.quantity;
+  product.price = price ?? product.price;
+
+  res.json(product);
+});
+
+// Remover produto
+router.delete("/:id", (req, res) => {
+  const index = products.findIndex(p => p.id === parseInt(req.params.id, 10));
+  if (index === -1) return res.status(404).json({ error: "Produto não encontrado" });
+
+  products.splice(index, 1);
+  res.status(204).send();
+});
+
+
 module.exports = router;
