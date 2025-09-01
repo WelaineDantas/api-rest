@@ -1,0 +1,124 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Estoque",
+    "version": "1.0.0",
+    "description": "API RESTful para gerenciamento de estoque"
+  },
+  "servers": [
+    { "url": "http://localhost:3000" }
+  ],
+  "paths": {
+    "/api/v1/products": {
+      "get": {
+        "summary": "Lista todos os produtos",
+        "responses": {
+          "200": {
+            "description": "Lista de produtos",
+            "content": {
+              "application/json": {
+                "example": [
+                  { "id": 1, "name": "Notebook Dell", "quantity": 10, "price": 3500.0 },
+                  { "id": 2, "name": "Mouse Logitech", "quantity": 25, "price": 120.0 },
+                  { "id": 3, "name": "Teclado Mecânico", "quantity": 15, "price": 450.0 }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo produto",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "quantity": { "type": "integer" },
+                  "price": { "type": "number" }
+                },
+                "required": ["name", "quantity", "price"]
+              },
+              "example": { "name": "Monitor Samsung", "quantity": 5, "price": 899.9 }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produto criado",
+            "content": {
+              "application/json": {
+                "example": { "id": 4, "name": "Monitor Samsung", "quantity": 5, "price": 899.9 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{id}": {
+      "get": {
+        "summary": "Obtém um produto pelo ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produto encontrado",
+            "content": {
+              "application/json": {
+                "example": { "id": 1, "name": "Notebook Dell", "quantity": 10, "price": 3500.0 }
+              }
+            }
+          },
+          "404": { "description": "Produto não encontrado" }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um produto",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "quantity": { "type": "integer" },
+                  "price": { "type": "number" }
+                }
+              },
+              "example": { "name": "Notebook Dell i7", "quantity": 8, "price": 3600.0 }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto atualizado",
+            "content": {
+              "application/json": {
+                "example": { "id": 1, "name": "Notebook Dell i7", "quantity": 8, "price": 3600.0 }
+              }
+            }
+          },
+          "404": { "description": "Produto não encontrado" }
+        }
+      },
+      "delete": {
+        "summary": "Remove um produto",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "204": { "description": "Produto removido com sucesso" },
+          "404": { "description": "Produto não encontrado" }
+        }
+      }
+    }
+  }
+}
