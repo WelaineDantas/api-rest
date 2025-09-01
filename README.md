@@ -37,3 +37,19 @@ curl http://localhost:3000/api/v1/products
 ```bash
 curl -X POST http://localhost:3000/api/v1/products -H "Content-Type: application/json" -d '{ "name": "Leite 1L", "quantity": 100, "price": 5.50 }'
 ```
+## 🌍 Possíveis usos da nossa API
+
+Esta API poderia ser aplicada em diversos contextos de controle de estoque:
+- **Mercearias e supermercados**: acompanhar a quantidade de itens em tempo real.
+- **Farmácias**: controlar validade e disponibilidade de medicamentos.
+- **Lojas de roupas**: registrar entrada e saída de peças do estoque.
+- **E-commerce**: integração com vendas online para atualizar automaticamente o estoque.
+
+## 📖 Tecnologias utilizadas
+- Node.js
+- Express
+- Swagger UI
+
+### Modo desenvolvedor
+```bash
+npm run dev
