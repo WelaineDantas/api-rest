@@ -7,6 +7,7 @@ Esta é uma API RESTful desenvolvida em **Node.js + Express** para o gerenciamen
 1. Instale as dependências:
 ```bash
 npm install
+npm install morgan
 ```
 
 2. Inicie a API:
