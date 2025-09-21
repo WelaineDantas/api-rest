@@ -110,5 +110,85 @@ describe('API de Produtos - Testes Automatizados', () => {
       expect(response.body.error).toContain('Campos obrigatórios');
     });
   });  
+
+  // Atualizar produto existente
+  describe('PUT /api/v1/products/:id', () => {
+    test('Deve atualizar produto existente com sucesso', async () => {
+      const atualizacao = {
+        name: "Notebook Dell i7",
+        quantity: 8,
+        price: 3600.0
+      };
+
+      const response = await request(app)
+        .put('/api/v1/products/1')
+        .send(atualizacao)
+        .expect('Content-Type', /json/)
+        .expect(200);
+      
+      expect(response.body.id).toBe(1);
+      expect(response.body.name).toBe(atualizacao.name);
+      expect(response.body.quantity).toBe(atualizacao.quantity);
+      expect(response.body.price).toBe(atualizacao.price);
+    });
+
+    test('Deve atualizar parcialmente quando apenas alguns campos são enviados', async () => {
+      const atualizacaoParcial = {
+        price: 125.0
+      };
+
+      const response = await request(app)
+        .put('/api/v1/products/2')
+        .send(atualizacaoParcial)
+        .expect('Content-Type', /json/)
+        .expect(200);
+      
+      expect(response.body.id).toBe(2);
+      expect(response.body.name).toBe("Mouse Logitech"); 
+      expect(response.body.quantity).toBe(25); 
+      expect(response.body.price).toBe(125.0);
+    });
+
+    test('Deve retornar erro 404 ao tentar atualizar produto inexistente', async () => {
+      const response = await request(app)
+        .put('/api/v1/products/999')
+        .send({ name: "Produto Fantasma" })
+        .expect('Content-Type', /json/)
+        .expect(404);
+      
+      expect(response.body.error).toBe('Produto não encontrado');
+    });
+  });
+
+  // Deletar produto
+  describe('DELETE /api/v1/products/:id', () => {
+    test('Deve deletar produto existente com sucesso', async () => {
+      // Primeiro verificamos que o produto existe
+      await request(app)
+        .get('/api/v1/products/3')
+        .expect(200);
+
+      // Deletamos o produto
+      await request(app)
+        .delete('/api/v1/products/3')
+        .expect(204);
+      
+      // Verificamos que o produto não existe mais
+      const response = await request(app)
+        .get('/api/v1/products/3')
+        .expect(404);
+      
+      expect(response.body.error).toBe('Produto não encontrado');
+    });
+
+    test('Deve retornar erro 404 ao tentar deletar produto inexistente', async () => {
+      const response = await request(app)
+        .delete('/api/v1/products/999')
+        .expect('Content-Type', /json/)
+        .expect(404);
+      
+      expect(response.body.error).toBe('Produto não encontrado');
+    });
+  });
 });
 
