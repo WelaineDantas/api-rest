@@ -190,5 +190,24 @@ describe('API de Produtos - Testes Automatizados', () => {
       expect(response.body.error).toBe('Produto não encontrado');
     });
   });
+
+  //Validação de tipos de dados
+  describe('Validação de tipos de dados', () => {
+    test('Deve aceitar diferentes formatos válidos de números', async () => {
+      const produto = {
+        name: "Produto Teste",
+        quantity: "10",
+        price: 99.99
+      };
+
+      const response = await request(app)
+        .post('/api/v1/products')
+        .send(produto)
+        .expect(201);
+      
+      expect(response.body).toHaveProperty('id');
+      expect(typeof response.body.quantity).toBe('string');
+    });
+  }); 
 });
 
