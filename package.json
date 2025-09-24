@@ -5,7 +5,10 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "test": "jest --verbose",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "express": "^4.19.2",
@@ -13,9 +16,35 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0",
+    "supertest": "^6.3.4"
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/server.js",
+      "!src/openapi.json"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.js",
+      "**/?(*.)+(spec|test).js"
+    ],
+    "verbose": true
+  },
+  "module.exports": {
+  "testEnvironment": "node",
+  "coveragePathIgnorePatterns": ["/node_modules/"],
+  "testMatch": ["**/__tests__/**/*.js', '**/?(*.)+(spec|test).js"],
+  "collectCoverageFrom": [
+    "src/**/*.js",
+    "!src/server.js"
+  ]
+}
 }
